@@ -1,0 +1,33 @@
+# 导出清单：$HOME → 仓库（scripts/export.sh 读；install.sh 不读它，按 home/ 全树部署）
+# 字段：$HOME相对路径 <TAB> 仓库相对路径 <TAB> 模式 <TAB> 备注
+#
+# 模式说明：
+#   raw    —— 两侧应逐字节一致，双向安全；本机改了配置就 export 同步回仓库
+#   manual —— 仓库版是人工脱敏/裁剪过的移植版，与本机版**不同构**；
+#             export 不碰它们，本机改动需要人工合并进仓库（并重跑 check-secrets）
+#
+.profile	home/.profile	raw
+.bash_logout	home/.bash_logout	raw
+.tmux.conf	home/.tmux.conf	raw
+.gitconfig	home/.gitconfig	raw	身份是「待填写」占位符，本身就是模板
+.bashrc	home/.bashrc	manual	仓库版删掉了 WSL 专属段落（Windows PATH/vault 别名），并精简了注释
+.config/starship.toml	home/.config/starship.toml	manual	仓库版注释里不含用户名/主机名
+.config/nvim/init.lua	home/.config/nvim/init.lua	manual	仓库版注释去掉了家目录路径
+.config/nvim/lazy-lock.json	home/.config/nvim/lazy-lock.json	raw	插件锁文件
+.config/herdr/config.toml	home/.config/herdr/config.toml	manual	仓库版用 $HOME 写路径、去掉了 E 盘探针条目
+.config/herdr/status.d/proxy.sh	home/.config/herdr/status.d/proxy.sh	manual	仓库版注释已通用化
+.config/herdr/status.d/load.sh	home/.config/herdr/status.d/load.sh	raw
+.config/herdr/status.d/mem.sh	home/.config/herdr/status.d/mem.sh	raw
+.config/herdr/status.d/gpu.sh	home/.config/herdr/status.d/gpu.sh	manual	本机用 WSL 专用 nvidia-smi 路径，仓库版用 PATH 查找
+.config/atuin/config.toml	home/.config/atuin/config.toml	raw
+.config/btop/btop.conf	home/.config/btop/btop.conf	raw
+.config/htop/htoprc	home/.config/htop/htoprc	raw
+.config/glow/glow.yml	home/.config/glow/glow.yml	raw
+.config/fontconfig/fonts.conf	home/.config/fontconfig/fonts.conf	raw	中文/CJK 字体弱回退
+.config/pip/pip.conf	home/.config/pip/pip.conf	raw
+.config/uv/uv.toml	home/.config/uv/uv.toml	raw
+.local/bin/nvm-link	home/.local/bin/nvm-link	raw
+.claude/hooks/check-claude-md.sh	home/.claude/hooks/check-claude-md.sh	manual	仓库版注释里不含另一平台的用户路径
+.claude/hooks/auto-snapshot.sh	home/.claude/hooks/auto-snapshot.sh	manual	仓库版把「快照脚本缺失」改为静默跳过
+.claude/skills/herdr/SKILL.md	home/.claude/skills/herdr/SKILL.md	raw
+.claude/settings.json	home/.claude/settings.json.example	manual	仓库只维护 .example（token 占位符），真实 settings.json 永不入库

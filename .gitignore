@@ -1,0 +1,30 @@
+# ---- 凭据 / 密钥：任何情况下都不入库（防手滑；真正的边界是 check-secrets.sh）----
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+known_hosts
+.netrc
+.git-credentials
+.npmrc
+.pypirc
+
+# ---- Claude / 供应商真实配置（含 token 的版本；仓库只收 settings.json.example）----
+home/.claude/settings.json
+home/.claude/settings.local.json
+home/.claude.json
+.cc-switch/
+
+# ---- install.sh 在 $HOME 生成的备份（若在仓库目录内跑，防误提交）----
+*.before-install
+*.before-install.*
+
+# ---- 运行时产物 / 缓存 ----
+*.log
+__pycache__/
+*.pyc
+.DS_Store

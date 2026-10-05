@@ -1,0 +1,3 @@
+#!/bin/sh
+# 提交前自动扫密钥（由 git config core.hooksPath .githooks 启用）
+exec "$(git rev-parse --show-toplevel)/scripts/check-secrets.sh" --staged

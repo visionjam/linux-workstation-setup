@@ -1,0 +1,35 @@
+# uv 的默认包索引 —— 指向清华 TUNA 镜像
+#
+# 【为什么改这个】
+# 本机实测（装 numpy 2.5.3，含下载+解析+安装）：
+#     官方 PyPI + 走代理    17.5 秒   ← 改之前的默认行为
+#     清华镜像 + 走代理      4.3 秒   ← 现在这个配置
+#     清华镜像 + 直连        1.8 秒   （要额外改 no_proxy，未采用）
+# 官方 PyPI 直连在本机是超时的，只能走代理绕一圈；换镜像省掉的正是这一圈。
+#
+# 【和 pip 的关系：两份完全独立的配置】
+# uv 刻意不读 pip.conf / PIP_INDEX_URL —— 这是 Astral 的设计决定，理由是
+# 「读别的工具的配置会把自己锁死在对方的格式和 bug 上」（官方文档列了 5 条）。
+# 所以本文件和 ~/.config/pip/pip.conf 互不影响，各改各的。
+#
+# 【不受 CC Switch 影响】
+# CC Switch 切换供应商时只重写 ~/.claude/settings.json 的 env 块，碰不到这里。
+
+[[index]]
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+
+# 【临时绕开镜像】
+# 清华是完整的 PyPI 镜像，正常不会缺包。万一遇到镜像没同步的新包，
+# 或者要装特殊来源的包（例如 GPU 版 torch），用命令行参数覆盖即可：
+#
+#     uv pip install --default-index https://pypi.org/simple <包名>
+#     uv pip install --default-index https://download.pytorch.org/whl/cu128 torch
+#
+# 命令行参数优先级高于本文件。
+#
+# 【另一个可选项：uv 自己的 Python 版本下载】
+# 本文件只影响「装 Python 包」。`uv python install` 下载解释器走的是
+# python-build-standalone，若要换源可另加：
+#     python-install-mirror = "https://ghproxy.cn/https://github.com/astral-sh/python-build-standalone/releases/download"
+# 当前没配 —— 你系统已有 3.12.3，且 uv python list 显示其他版本都还没下载过。

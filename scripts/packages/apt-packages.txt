@@ -1,0 +1,108 @@
+# apt 软件包清单（Ubuntu / Debian 系）
+# 用法：scripts/packages/install-apt.sh（自动走 sudo；支持 --dry-run）
+# 一行一个包，行内 # 后面是注释。分组只为阅读方便，与安装顺序无关。
+#
+# ⚠️ 这是「精选清单」不是 dpkg 全量导出：基础系统包（bash/coreutils/grep/
+#    ubuntu-minimal 之类）没有列 —— 任何 Ubuntu 都自带，列了只是噪音。
+
+# —— shell 与终端 ——
+tmux
+fzf
+direnv
+eza
+zoxide
+
+# —— 文本 / 搜索 ——
+ripgrep
+fd-find              # Ubuntu 里命令改叫 fdfind（install.sh 会补 fd 软链）
+bat                  # Ubuntu 里命令改叫 batcat（install.sh 会补 bat 软链）
+jq
+git-delta
+tig
+tree
+
+# —— 系统 / 性能诊断 ——
+htop
+btop
+ncdu
+duf
+glances
+s-tui
+iotop
+sysstat
+pv
+strace
+ltrace
+valgrind
+hyperfine
+
+# —— 网络 ——
+bind9-dnsutils       # 提供 dig
+nmap
+tcpdump
+mtr-tiny
+whois
+traceroute
+iperf3
+httpie
+mosh
+sshfs
+socat
+curl
+ca-certificates
+
+# —— 开发 ——
+build-essential      # 元包：gcc/g++/make + libc6-dev（缺它会出现「能编译不能链接」）
+cmake
+gdb
+python3-dev
+python3-venv
+sqlite3
+gh
+git-lfs
+
+# —— 数据 / 媒体 ——
+sd
+gron
+miller
+qalc
+ffmpeg
+imagemagick          # 24.04 是 IM6：命令叫 convert，不叫 magick
+chafa                # yazi 的图像预览后端
+asciinema
+
+# —— 归档 / 压缩 ——
+unzip
+zip
+zstd
+lz4
+7zip                 # ⚠️ 真身包名就叫 7zip（p7zip-full 是过渡包）
+age
+
+# —— 剪贴板 / 小工具 ——
+xclip
+wl-clipboard
+dos2unix
+moreutils
+entr
+parallel
+just
+tldr
+nala
+pulseaudio-utils     # herdr 提示音走 paplay（装在 /usr/bin）
+
+# —— 字体（中文 / CJK 显示修复）——
+fonts-noto-cjk
+
+# —— 趣味 ——
+cowsay
+figlet
+lolcat
+sl
+
+# —— 可选：Docker（⚠️ 需先按 Docker 官方文档添加 apt 源，再取消注释）——
+# docker-ce
+# docker-ce-cli
+# containerd.io
+# docker-buildx-plugin
+# docker-compose-plugin

@@ -1,0 +1,59 @@
+{
+  "env": {
+    "ANTHROPIC_AUTH_TOKEN": "sk-REPLACE_ME",
+    "ANTHROPIC_BASE_URL": "https://api.deepseek.com/anthropic",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL": "deepseek-flash[1M]",
+    "ANTHROPIC_DEFAULT_FABLE_MODEL_NAME": "deepseek-flash",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-flash",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL_NAME": "deepseek-flash",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "deepseek-flash[1M]",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL_NAME": "deepseek-flash",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "deepseek-flash[1M]",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL_NAME": "deepseek-flash",
+    "ANTHROPIC_MODEL": "deepseek-flash[1M]",
+    "API_TIMEOUT_MS": "600000",
+    "CLAUDE_CODE_EFFORT_LEVEL": "max",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-flash[1M]",
+    "HTTPS_PROXY": "http://127.0.0.1:7890",
+    "HTTP_PROXY": "http://127.0.0.1:7890",
+    "NO_PROXY": "api.deepseek.com,localhost,127.0.0.1,pypi.tuna.tsinghua.edu.cn",
+    "no_proxy": "api.deepseek.com,localhost,127.0.0.1,pypi.tuna.tsinghua.edu.cn"
+  },
+  "permissions": {
+    "allow": [
+      "Read(//usr/bin/**)",
+      "Read(//etc/**)"
+    ],
+    "defaultMode": "auto"
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $HOME/.claude/hooks/check-claude-md.sh",
+            "timeout": 10,
+            "statusMessage": "Checking CLAUDE.md..."
+          },
+          {
+            "type": "command",
+            "command": "bash $HOME/.claude/hooks/auto-snapshot.sh",
+            "timeout": 30,
+            "statusMessage": "Checking snapshot age..."
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "claude-code-setup@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "learning-output-style@claude-plugins-official": true,
+    "plugin-dev@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true
+  },
+  "model": "deepseek-flash[1M]",
+  "skipWebFetchPreflight": true
+}

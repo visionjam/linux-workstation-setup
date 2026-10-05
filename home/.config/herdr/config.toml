@@ -1,0 +1,57 @@
+onboarding = false
+
+[theme]
+name = "catppuccin"
+auto_switch = false
+
+[ui]
+# 宿主光标策略。默认 "auto" 会让 herdr 自己画一个光标（为躲开某些终端
+# 组合下的光标闪烁）。代价：外层终端拿不到真光标位置，输入法候选窗
+# 就没处可跟。"native" = 始终用外层终端的真光标 → 输入法能知道插入点。
+# 权衡：可能重新出现光标闪烁（正是 auto 想躲开的东西）。
+host_cursor = "native"
+
+# 顶栏右侧的状态条目。写法是「内部标签枚举」：type 是判别字段，其余字段同表并列。
+#   zoom ／ hostname ／ datetime —— 均无额外字段
+#   text    需 text = "…"
+#   command 需 command = "…"（在 server 上执行）
+# datetime 支持可选的 format，值是 strftime 格式串，而且**会被校验**：
+# 非法占位符（如 %Q）会让 `herdr config check` 直接报错 —— 可以「先验后写」。
+#
+# command 条目机制（查 v0.9.x 文档 + 实测）：
+#   - 立即跑一次，之后每 interval_seconds 一次（1s~1年）；不阻塞渲染、不与上次重叠
+#   - 只取输出的**最后一行**；失败 / 空输出 / 超时（timeout_seconds）→ 该条目清空
+#   - 以 /bin/sh -lc 执行 → 脚本要有 shebang + 执行位（是 exec 不是 source）
+#   - 用 $HOME 写路径（sh 会展开）；server 派生进程的 PATH 未必继承你终端里那套
+#   - 探针脚本放 ~/.config/herdr/status.d/（本仓库在 home/.config/herdr/status.d/）
+# ⚠️ 改完先 `herdr config check` 再 `herdr server reload-config`：
+#    TOML 解析错会让**整份配置回落默认值**，语义错（如 interval=0）只隐藏那一条。
+# ⚠️ 内联表（{...}）**不能跨行** —— 一条条目必须写成一行，
+#    拆行会被 config check 报 `invalid inline table`。
+tab_bar_right = [
+    { type = "zoom" },
+    { type = "command", command = "$HOME/.config/herdr/status.d/proxy.sh", interval_seconds = 15, timeout_seconds = 5 },
+    { type = "command", command = "$HOME/.config/herdr/status.d/load.sh", interval_seconds = 5, timeout_seconds = 3 },
+    { type = "command", command = "$HOME/.config/herdr/status.d/mem.sh", interval_seconds = 10, timeout_seconds = 3 },
+    { type = "command", command = "$HOME/.config/herdr/status.d/gpu.sh", interval_seconds = 10, timeout_seconds = 5 },
+    { type = "datetime", format = "%Y-%m-%d %H:%M:%S" },
+]
+
+status_indicators = "dots"
+[ui.toast]
+delivery = "herdr"
+
+[ui.sound]
+enabled = true
+
+[experimental]
+# 把 pane 主动藏起来的终端光标（?25l）重新暴露成 ?25h，好让外层终端的输入法
+# 拿到插入点坐标。官方文档把它描述成 macOS 专用，但实测在 Windows Terminal +
+# WSL 下同样有效（Linux 下叠加下面的 host_cursor = "native" 一起用）。
+reveal_hidden_cursor_for_cjk_ime = true
+
+# 上面那条的生效范围白名单（空列表 = 所有 pane 都开）。
+# 只开给 Claude Code：它属于「自己藏光标、但会自己画一个」的程序，需要这个补偿；
+# 而 vim 普通模式那类「藏了光标又不画替代」的程序，开全会多出一个假光标。
+# 换成别的 agent 时要把名字加进这个列表（如 codex / gemini）。
+cjk_ime_agents = ["claude"]

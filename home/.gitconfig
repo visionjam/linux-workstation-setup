@@ -1,0 +1,58 @@
+# ============================================================
+#  git 全局配置   ~/.gitconfig
+#
+#  生效范围：所有仓库（某个仓库可以用自己的 .git/config 覆盖）
+#  查看生效值：      git config --list --show-origin
+#  查看某一项来源：  git config --show-origin user.name
+# ============================================================
+
+[user]
+    # ⚠️ 改成你自己的 —— 每一条 commit 都会永久记录这两个字段
+    name = 待填写
+    email = 待填写
+
+[init]
+    # 新仓库的默认分支名（取代旧的 master）
+    defaultBranch = main
+
+[core]
+    # 用 delta 当 diff 分页器 —— diff / log / show 全部走它
+    pager = delta
+    # 跨平台换行符：提交时把 CRLF 转成 LF，检出时不动
+    # （WSL 里常和 Windows 侧的文件打交道，这行能避免大量假 diff）
+    autocrlf = input
+
+[interactive]
+    # 交互式 add 时的 diff 也走 delta
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true          # 按 n / N 在 diff 块之间跳
+    line-numbers = true      # 显示行号
+    # side-by-side = true    # 并排显示（宽屏可开，窄终端会挤成一团）
+
+[merge]
+    # 冲突时多显示"原始版本"那一栏，三方对比更清楚
+    conflictStyle = diff3
+
+[diff]
+    # 高亮"被移动过的代码块"，而不只是显示成删除+新增
+    colorMoved = default
+
+[alias]
+    # 常用命令的短别名（自己加格式：别名 = 原命令）
+    st = status
+    co = checkout
+    br = branch
+    ci = commit
+    lg = log --oneline --graph --decorate --all
+    last = log -1 HEAD --stat
+    unstage = reset HEAD --
+
+[push]
+    # 第一次 push 时自动建立上游追踪 —— 省掉 git push -u origin main
+    autoSetupRemote = true
+
+[fetch]
+    # fetch 时清理"远程已删、本地还留着"的分支引用
+    prune = true
