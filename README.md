@@ -46,6 +46,9 @@ bash scripts/install.sh                     # 3. 部署配置到 $HOME（覆盖�
 ## 日常维护
 
 ```bash
+# 克隆后做一次性配置：启用提交前密钥扫描钩子（core.hooksPath 是本地设置，不随克隆复制）
+git config --local core.hooksPath .githooks
+
 # 本机改了配置，想同步回仓库：
 scripts/export.sh            # 按清单把 raw 模式的文件导出（manual 的需人工合并）
 git diff                     # 人工复核

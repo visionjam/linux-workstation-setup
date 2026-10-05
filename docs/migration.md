@@ -16,6 +16,7 @@
 ```bash
 git clone git@github.com:visionjam/linux-workstation-setup.git
 cd linux-workstation-setup
+git config --local core.hooksPath .githooks   # 启用提交前密钥扫描钩子（克隆后只需做一次）
 ```
 
 （没有 SSH key 就先用 `https://` 克隆；生成 SSH key 并加到 GitHub 的事可以之后做。）
